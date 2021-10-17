@@ -1,0 +1,71 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.5.5'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'org.openapi.generator' version '5.2.1'
+}
+
+group = 'com.learning.petservice'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation "org.springframework:spring-web"
+	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation(platform('org.junit:junit-bom:5.8.1'))
+	testImplementation('org.junit.jupiter:junit-jupiter')
+
+	// OpenAPI build requirements
+	implementation 'org.openapitools:jackson-databind-nullable:0.2.0'
+	implementation "javax.validation:validation-api:2.0.1.Final"
+	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
+}
+
+test {
+	useJUnitPlatform()
+}
+
+openApiValidate {
+	inputSpec = "$rootDir/src/main/resources/openapi-pet-service-spec.yml".toString()
+}
+
+openApiGenerate {
+	inputSpec = "$rootDir/src/main/resources/openapi-pet-service-spec.yml".toString()
+	outputDir = "$buildDir/generated".toString()
+	generatorName = "spring"
+	apiPackage = "com.learning.petservice.api"
+	modelPackage = "com.learning.petservice.model"
+	configOptions = [
+			configPackage       : "com.learning.petservice.config",
+			java8               : "true",
+			dateLibrary         : "java8",
+			serializationLibrary: "jackson",
+			library             : "spring-boot",
+			useBeanValidation   : "true",
+			interfaceOnly       : "true",
+			serializableModel   : "true",
+			useTags             : "true"
+	]
+}
+
+task generateCode(type: Copy, dependsOn: ['openApiGenerate']) {
+}
+
+compileJava.dependsOn(generateCode)
+
+// Makes the auto-generated code from OpenAPI available to the project
+sourceSets {
+	main {
+		java {
+			srcDir "$buildDir/generated"
+		}
+	}
+}

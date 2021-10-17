@@ -1,0 +1,48 @@
+openapi: 3.0.0
+
+info:
+  version: 0.0.1
+  title: Pet Service
+  description: The pet service
+
+tags:
+  - name: "Pet Service"
+
+servers:
+  - url: http://localhost:8080
+
+paths:
+  /pet-service/cats:
+    get:
+      summary: Retrieve information related to cats (summary)
+      tags:
+        - "Pet Service"
+      description: Retrieve information related to cats (description)
+      operationId: getAllCats
+      responses:
+        "200":
+          description: This means its OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+
+components:
+  schemas:
+    Pet:
+      description: This is the pet model
+      type: object
+      properties:
+        name:
+          description: Name of the pet
+          type: string
+        petType:
+          description: Type of the pet
+          type: string
+          enum:
+            - Cat
+            - Dog
+            - Rodent
+            - Bird
