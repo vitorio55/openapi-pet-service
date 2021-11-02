@@ -12,22 +12,108 @@ servers:
   - url: http://localhost:8080
 
 paths:
-  /pet-service/cats:
+  /pet-service/cats/{id}:
     get:
-      summary: Retrieve information related to cats (summary)
+      summary: Find an existing cat
       tags:
         - "Pet Service"
-      description: Retrieve information related to cats (description)
+      operationId: findCat
+      parameters:
+        - in: path
+          description: ID of the cat
+          name: id
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: Cat found and returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+        "404":
+          description: Cat not found
+    patch:
+      summary: Update an existig cat
+      tags:
+        - "Pet Service"
+      operationId: updateCat
+      parameters:
+        - in: path
+          description: ID of the cat
+          name: id
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: Cat data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pet'
+          text/plain:
+            schema:
+              type: string
+      responses:
+        "204":
+          description: Cat was updated successfully
+        "404":
+          description: Cat not found
+    delete:
+      summary: Delete a cat
+      tags:
+        - "Pet Service"
+      operationId: deleteCat
+      parameters:
+        - in: path
+          description: ID of the cat
+          name: id
+          schema:
+            type: string
+          required: true
+      responses:
+        "204":
+          description: Cat was deleted
+        "404":
+          description: Cat not found
+
+  /pet-service/cats:
+    get:
+      summary: Retrieve all cats
+      tags:
+        - "Pet Service"
       operationId: getAllCats
       responses:
         "200":
-          description: This means its OK
+          description: Cats data was found and returned
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Pet'
+    post:
+      summary: Create a new cat
+      tags:
+        - "Pet Service"
+      operationId: createCat
+      requestBody:
+        description: Body of request for cat creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pet'
+          text/plain:
+            schema:
+              type: string
+      responses:
+        "201":
+          description: Cat was created successfully
+        "400":
+          description: Pet provided in request is not valid
 
 components:
   schemas:
@@ -35,8 +121,14 @@ components:
       description: This is the pet model
       type: object
       properties:
+        id:
+          description: Database ID
+          type: string
         name:
           description: Name of the pet
+          type: string
+        imgUrl:
+          description: Image URL of the kitty
           type: string
         petType:
           description: Type of the pet

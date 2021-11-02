@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=rootuser
+      - MONGO_INITDB_ROOT_PASSWORD=rootpwd
+    volumes:
+      - ./_mongodb:/data/db
+    ports:
+      - '27017:27017'
+    restart: unless-stopped
+  petservice:
+    build:
+      dockerfile: Dockerfile
+    container_name: petservice
+    ports:
+      - '8080:8080'
+    restart: unless-stopped
+    depends_on:
+      - mongodb

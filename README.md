@@ -19,3 +19,14 @@ Now that we have the jar file, it is possible to build and run the docker applic
 
     $ docker build -t petservice .
     $ docker run -d -p 8080:8080 --name petservice petservice
+
+## Mongo container
+
+Mongo container requires a directory _mongodb inside the root folder of the repository to run (is its volume).
+
+### Cat image generation
+
+Using thecatapi to get random cat images :)
+
+https://api.thecatapi.com/v1/images/search  
+https://docs.thecatapi.com/
