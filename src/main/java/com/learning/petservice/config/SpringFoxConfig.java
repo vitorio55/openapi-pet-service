@@ -1,4 +1,4 @@
-package com.learning.petservice.configuration;
+package com.learning.petservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

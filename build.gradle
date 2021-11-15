@@ -16,6 +16,9 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+	implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
 	implementation "org.springframework:spring-web"
 	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb', version: '2.4.0'
